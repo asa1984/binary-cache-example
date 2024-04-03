@@ -1,0 +1,35 @@
+name: Copy package to S3 binary cache store
+
+env:
+  AWS_PROFILE_NAME: builder
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  BINARY_CACHE_SECRET_KEY: ${{ secrets.BINARY_CACHE_SECRET_KEY }}
+  S3_API_ENDPOINT: ${{ secrets.S3_API_ENDPOINT }}
+
+on:
+  push:
+  pull_request:
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Build package
+        use: nix build
+
+      - name: Sign package with secret key
+        run: |
+          echo $BINARY_CACHE_SECRET_KEY > ./secret.key
+          nix store sign --recursive --key-file ./secret.key
+
+      - name: Configure AWS credentials
+        run: |
+          nix develop .#ci --command aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE_NAME
+          nix develop .#ci --command aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile $AWS_PROFILE_NAME
+
+      - name: Copy package
+        run: nix copy --to s3://nix-cache\?profile=$AWS_PROFILE_NAME\&endpoint=$S3_API_ENDPOINT\&compression=zstd
