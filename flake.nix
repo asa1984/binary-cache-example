@@ -1,6 +1,6 @@
 {
   nixConfig = {
-    extra-substituters = [ "cache.asa1984.dev" ];
+    extra-substituters = [ "https://cache.asa1984.dev" ];
     extra-trusted-public-keys =
       [ "cache.asa1984.dev-1:NnXDao1OJ5Cvcgvb488znJH6mTnldKJVlyEHGjAQJLg=" ];
   };
