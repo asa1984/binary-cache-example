@@ -16,7 +16,7 @@
       in {
         packages = rec {
           default = hello-rs;
-          hello-rs = pkgs.callPackage ./default.nix { };
+          hello-rs = pkgs.callPackage ./hello-rs { };
         };
         devShells = {
           ci = pkgs.mkShell { packages = with pkgs; [ awscli ]; };
