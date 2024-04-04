@@ -9,7 +9,8 @@ env:
 
 on:
   push:
-  pull_request:
+    paths-ignore:
+      - "**/README.md"
 jobs:
   copy:
     runs-on: ubuntu-latest

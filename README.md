@@ -15,7 +15,7 @@ GitHub Action builds and signs `hello-rs`, and copies it to the S3 bucket with t
 Execute following command:
 
 ```bash
-$ nix run --accept-flake-config github:asa1984#binary-cache-example
+$ nix run --accept-flake-config github:asa1984/binary-cache-example
 Hello, world!
 ```
 
