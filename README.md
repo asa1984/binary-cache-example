@@ -1,8 +1,8 @@
 ## Example for setting up S3 Binary Cache for Nix
 
-This repository provides `hello-rs` package via the S3 binary cache store (on Cloudflare R2).
+This repository provides `hello-server` package via the S3 binary cache store (on Cloudflare R2).
 
-GitHub Action builds and signs `hello-rs`, and copies it to the S3 bucket with the `nix copy` command. Binary cache is available via [cache.asa1984.dev](https://cache.asa1984.dev).
+GitHub Action builds and signs `hello-server`, and copies it to the S3 bucket with the `nix copy` command. Binary cache is available via [cache.asa1984.dev](https://cache.asa1984.dev).
 
 ### :zap: Requirements
 

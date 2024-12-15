@@ -11,13 +11,13 @@ on:
   push:
     paths-ignore:
       - "**/README.md"
+
 jobs:
   copy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Build package
         run: nix build
@@ -29,8 +29,8 @@ jobs:
 
       - name: Configure AWS credentials
         run: |
-          nix develop .#ci --command aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE_NAME
-          nix develop .#ci --command aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile $AWS_PROFILE_NAME
+          nix shell nixpkgs#awscli --command aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE_NAME
+          nix shell nixpkgs#awscli --command aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile $AWS_PROFILE_NAME
 
       - name: Copy package
         run: nix copy --to s3://nix-cache\?profile=$AWS_PROFILE_NAME\&endpoint=$S3_API_ENDPOINT\&compression=zstd
