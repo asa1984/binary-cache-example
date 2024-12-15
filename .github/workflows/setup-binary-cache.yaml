@@ -20,7 +20,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
 
       - name: Build package
-        run: nix build
+        run: nix build . --accept-flake-config
 
       - name: Sign package with secret key
         run: |
